@@ -583,6 +583,9 @@ mod op {
             #[cfg(feature = "abi-7-9")]
             self.arg.flags
         }
+        pub fn reply<'data>(&self, data: &'data [u8]) -> Response {
+            Response::new_data(data)
+        }
     }
 
     #[derive(Debug)]
