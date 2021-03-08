@@ -47,4 +47,34 @@ impl Response {
         }
         f(&v)
     }
+
+    // Constructors
+    pub(crate) fn new_empty() -> Self {
+        Self::Error(0)
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn reply_empty() {
+        let r = Response::new_empty();
+        assert_eq!(
+            r.with_iovec(RequestId(0xdeadbeef), ioslice_to_vec),
+            vec![
+                0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xef, 0xbe, 0xad, 0xde, 0x00, 0x00,
+                0x00, 0x00,
+            ],
+        );
+    }
+
+    fn ioslice_to_vec<'a>(s: &[IoSlice<'a>]) -> Vec<u8> {
+        let mut v = Vec::with_capacity(s.iter().map(|x| x.len()).sum());
+        for x in s {
+            v.extend_from_slice(x);
+        }
+        v
+    }
 }

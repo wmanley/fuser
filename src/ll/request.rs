@@ -206,6 +206,8 @@ macro_rules! impl_request {
 }
 
 mod op {
+    use crate::ll::Response;
+
     use super::{
         super::{argument::ArgumentIterator, TimeOrNow},
         Request,
@@ -461,6 +463,9 @@ mod op {
         pub fn name(&self) -> &'a OsStr {
             self.name
         }
+        pub fn reply_ok(&self) -> Response {
+            Response::new_empty()
+        }
     }
     #[derive(Debug)]
     pub struct RmDir<'a> {
@@ -471,6 +476,9 @@ mod op {
     impl<'a> RmDir<'a> {
         pub fn name(&self) -> &'a OsStr {
             self.name
+        }
+        pub fn reply_ok(&self) -> Response {
+            Response::new_empty()
         }
     }
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
@@ -498,6 +506,9 @@ mod op {
                 dir: INodeNo(self.arg.newdir),
                 name: self.newname,
             }
+        }
+        pub fn reply_ok(&self) -> Response {
+            Response::new_empty()
         }
     }
 
@@ -644,6 +655,9 @@ mod op {
                 None
             }
         }
+        pub fn reply_ok(&self) -> Response {
+            Response::new_empty()
+        }
     }
 
     #[derive(Debug)]
@@ -658,6 +672,9 @@ mod op {
         }
         pub fn fdatasync(&self) -> bool {
             self.arg.fsync_flags & consts::FUSE_FSYNC_FDATASYNC != 0
+        }
+        pub fn reply_ok(&self) -> Response {
+            Response::new_empty()
         }
     }
     #[derive(Debug)]
@@ -686,6 +703,9 @@ mod op {
             return self.arg.position;
             #[cfg(not(target_os = "macos"))]
             0
+        }
+        pub fn reply_ok(&self) -> Response {
+            Response::new_empty()
         }
     }
     #[derive(Debug)]
@@ -724,6 +744,9 @@ mod op {
         pub fn name(&self) -> &'a OsStr {
             self.name
         }
+        pub fn reply_ok(&self) -> Response {
+            Response::new_empty()
+        }
     }
     #[derive(Debug)]
     pub struct Flush<'a> {
@@ -737,6 +760,9 @@ mod op {
         }
         pub fn lock_owner(&self) -> LockOwner {
             LockOwner(self.arg.lock_owner)
+        }
+        pub fn reply_ok(&self) -> Response {
+            Response::new_empty()
         }
     }
     #[derive(Debug)]
@@ -812,6 +838,9 @@ mod op {
         pub fn flags(&self) -> i32 {
             self.arg.flags
         }
+        pub fn reply_ok(&self) -> Response {
+            Response::new_empty()
+        }
     }
     #[derive(Debug)]
     pub struct FSyncDir<'a> {
@@ -825,6 +854,9 @@ mod op {
         }
         pub fn fdatasync(&self) -> bool {
             self.arg.fsync_flags & consts::FUSE_FSYNC_FDATASYNC != 0
+        }
+        pub fn reply_ok(&self) -> Response {
+            Response::new_empty()
         }
     }
     #[derive(Debug)]
@@ -859,6 +891,9 @@ mod op {
         }
         pub fn lock_owner(&self) -> LockOwner {
             LockOwner(self.arg.owner)
+        }
+        pub fn reply_ok(&self) -> Response {
+            Response::new_empty()
         }
     }
     #[derive(Debug)]
@@ -1094,6 +1129,9 @@ mod op {
         /// reply with an EINVAL error.
         pub fn flags(&self) -> u32 {
             self.arg.flags
+        }
+        pub fn reply_ok(&self) -> Response {
+            Response::new_empty()
         }
     }
     #[cfg(feature = "abi-7-24")]
