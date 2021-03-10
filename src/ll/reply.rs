@@ -98,6 +98,10 @@ impl Response {
         let r = abi::fuse_bmap_out { block };
         Self::from_struct(&r)
     }
+    pub(crate) fn new_xattr_size(size: u32) -> Self {
+        let r = abi::fuse_getxattr_out { size, padding: 0 };
+        Self::from_struct(&r)
+    }
 
     fn from_struct<T: AsBytes + ?Sized>(data: &T) -> Self {
         Self::Data(data.as_bytes().into())
