@@ -246,6 +246,11 @@ mod test {
         drop(mount);
         let mnt = cmd_mount();
         eprintln!("Our mountpoint: {:?}\nfuse mounts:\n{}", tmp.path(), mnt,);
+
+        // Linux supports MNT_DETACH, so we expect unmount to succeed even if the FS
+        // is busy.  Other systems don't so the unmount may fail and we will still
+        // have the mount listed.  The mount will get cleaned up later.
+        #[cfg(target_os = "linux")]
         assert!(!mnt.contains(&*tmp.path().to_string_lossy()));
 
         // We've unmounted successfully, it's safe to clean up:
